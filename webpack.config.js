@@ -5,7 +5,8 @@ const autoprefixer = require('autoprefixer');
 const path = require('path');
 
 module.exports = {
-  context: __dirname + '/src',
+    devtool: 'source-map',
+    context: __dirname + '/src',
   entry: {
     app: './app.js'
   },

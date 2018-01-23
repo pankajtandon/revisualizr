@@ -4,9 +4,10 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import DropzoneComponent from 'react-dropzone-component';
 import 'react-dropzone-component/styles/filepicker.css'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-
-export default class ScenesPage extends Component{
+class ScenesPage extends Component{
     render(){
         const styles = {
             tabs: {
@@ -38,36 +39,22 @@ export default class ScenesPage extends Component{
             }
         };
 
-        const data = [{
-            name: 'Tanner Linsley',
-            age: 26,
-            friend: {
-                name: 'Jason Maurer',
-                age: 23,
-            }
-        },{
-            name: 'sasdsas Linsley',
-            age: 36,
-            friend: {
-                name: 'sfs Maurer',
-                age: 53,
-            }
-        }];
+        const data = this.props.scenes;
 
         const columns = [{
             Header: 'Name',
             accessor: 'name' // String-based value accessors!
         }, {
-            Header: 'Age',
-            accessor: 'age',
+            Header: props => <span>Description of Scene</span>, // Custom header components!
+            accessor: 'description'
+        }, {
+            Header: 'Sq Ft',
+            accessor: 'sqft',
             Cell: props => <span className='number'>{props.value}</span>
         }, {
-            id: 'friendName', // Required because our accessor is not a string
-            Header: 'Friend Name',
-            accessor: d => d.friend.name // Custom value accessors!
-        }, {
-            Header: props => <span>Friend Age</span>, // Custom header components!
-            accessor: 'friend.age'
+            id: 'customerName',
+            Header: 'Customer Name',
+            accessor: d => d.customer.name // Custom value accessors!
         }];
 
         var componentConfig = {
@@ -123,3 +110,11 @@ export default class ScenesPage extends Component{
         );
     }
 }
+
+function mapStateToProps(state) {
+  return {
+    scenes: state.scenes
+  };
+}
+
+export default connect (mapStateToProps)(ScenesPage);
