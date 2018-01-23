@@ -8,7 +8,15 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 class ScenesPage extends Component{
+
+    handleClick = () => {
+        console.log('this is:', this);
+    }
+
+
     render(){
+
+        //Tabs
         const styles = {
             tabs: {
                 width: '100%',
@@ -39,6 +47,7 @@ class ScenesPage extends Component{
             }
         };
 
+        //Table
         const data = this.props.scenes;
 
         const columns = [{
@@ -55,8 +64,14 @@ class ScenesPage extends Component{
             id: 'customerName',
             Header: 'Customer Name',
             accessor: d => d.customer.name // Custom value accessors!
+        },{
+            Header: 'Delete?',
+            Cell: row => (
+                <button onClick={this.handleClick}>Delete</button>
+            )
         }];
 
+        //File Uploader
         var componentConfig = {
             iconFiletypes: ['.jpg', '.png', '.gif'],
             showFiletypeIcon: true,
@@ -64,6 +79,7 @@ class ScenesPage extends Component{
         };
         var djsConfig = { autoProcessQueue: false }
         var eventHandlers = { addedfile: (file) => console.log(file) }
+
 
         return (
             <div className="container">
