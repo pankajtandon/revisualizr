@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux';
 import ScenesReducer from './reducer-scenes';
+import DeleteSceneReducer from './reducer-delete-scene';
 
 const appReducers = combineReducers({
-    scenes: ScenesReducer
+    scenes: ScenesReducer,
+    deleteScene: DeleteSceneReducer
 });
 
 export default appReducers;

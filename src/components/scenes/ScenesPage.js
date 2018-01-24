@@ -6,14 +6,9 @@ import DropzoneComponent from 'react-dropzone-component';
 import 'react-dropzone-component/styles/filepicker.css'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {deleteSceneActionCreator} from "../../actions/deleteScene";
 
 class ScenesPage extends Component{
-
-    handleClick = () => {
-        console.log('this is:', this);
-    }
-
-
     render(){
 
         //Tabs
@@ -67,11 +62,11 @@ class ScenesPage extends Component{
         },{
             Header: 'Delete?',
             Cell: row => (
-                <button onClick={this.handleClick}>Delete</button>
+                <button onClick={() => {this.props.handleDelete(row.original)}}>Delete</button>
             )
         }];
 
-        //File Uploader
+        // File Uploader
         var componentConfig = {
             iconFiletypes: ['.jpg', '.png', '.gif'],
             showFiletypeIcon: true,
@@ -133,4 +128,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect (mapStateToProps)(ScenesPage);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        handleDelete: deleteSceneActionCreator
+    }, dispatch);
+}
+
+export default connect (mapStateToProps, mapDispatchToProps)(ScenesPage);

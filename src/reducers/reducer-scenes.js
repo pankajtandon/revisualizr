@@ -1,5 +1,5 @@
 export default function () {
-    return [
+    var scenes = [
         {
             id: "1",
             name: "kitchen",
@@ -27,5 +27,7 @@ export default function () {
             createdByUserId: "123",
             createdOn: "2018-01-22T11:00"
         }
-    ]
+    ];
+
+    return scenes.filter((scene) => {return (!scene.deleted) || (scene.deleted = false)});
 };
