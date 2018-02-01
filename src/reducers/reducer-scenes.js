@@ -1,33 +1,15 @@
-export default function () {
-    var scenes = [
-        {
-            id: "1",
-            name: "kitchen",
-            description: "kitchen in daylight",
-            sqft: 150,
-            customer: {id: "10", name: "Ryan Homes"},
-            createdByUserId: "123",
-            createdOn: "2018-01-22T10:00"
-        },
-        {
-            id: "2",
-            name: "bathroom",
-            description: "powder room on main floor",
-            sqft: 50,
-            customer: {id: "10", name: "Ryan Homes"},
-            createdByUserId: "123",
-            createdOn: "2018-01-22T10:30"
-        },
-        {
-            id: "3",
-            name: "bedroom",
-            description: "master bedroom",
-            sqft: 300,
-            customer: {id: "10", name: "Ryan Homes"},
-            createdByUserId: "123",
-            createdOn: "2018-01-22T11:00"
-        }
-    ];
+import {FETCH_SCENES, FETCH_SCENES_SUCCESS, FETCH_SCENES_FAILURE} from "../actions/scenes";
 
-    return scenes.filter((scene) => {return (!scene.deleted) || (scene.deleted = false)});
+export default function (state = {}, action) {
+    switch(action.type) {
+        case FETCH_SCENES:
+                return { ...state, scenesList: {scenes:[], error: null, loading: true} };
+        case FETCH_SCENES_SUCCESS:
+            return { ...state, scenesList: {scenes: action.payload, error: null, loading: false} };
+        case FETCH_SCENES_FAILURE:
+            error = action.payload || {message: action.payload.message};
+            return { ...state, scenesList: {scenes: [], error: error, loading: false} };
+        default:
+            return state;
+    }
 };

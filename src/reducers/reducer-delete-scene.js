@@ -1,10 +1,10 @@
+import {DELETE_SCENE} from "../actions/deleteScene";
+
 export default function (state = {}, action) {
-    console.log('State in reducer:', state);
     switch (action.type) {
-        case "DELETE_SCENE":
-            return {...state, deleted: true};
-            break;
+        case DELETE_SCENE:
+            return {...state, id: action.payload};
         default:
-            return {...state};
+            return state;
     }
 }

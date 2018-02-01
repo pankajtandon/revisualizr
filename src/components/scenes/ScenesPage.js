@@ -7,10 +7,19 @@ import 'react-dropzone-component/styles/filepicker.css'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {deleteSceneActionCreator} from "../../actions/deleteScene";
+import {fetchScenes, fetchScenesFailure, fetchScenesSuccess} from "../../actions/scenes";
 
 class ScenesPage extends Component{
-    render(){
+    constructor () {
+        super();
+    };
 
+    componentWillMount() {
+        this.props.retrieveScenes();
+    }
+
+    render(){
+        console.log('State in renderer: ', this.props);
         //Tabs
         const styles = {
             tabs: {
@@ -41,9 +50,20 @@ class ScenesPage extends Component{
                 padding: '0 15px'
             }
         };
-
         //Table
-        const data = this.props.scenes;
+        let { scenes, loading, error } = this.props.scenesList || {scenes:[], loading: false, error: null};
+        const deleteSceneId = this.props.deleteSceneId;
+        if (deleteSceneId && deleteSceneId.id) {
+            scenes = scenes.filter((scene) => {
+                return scene.id != deleteSceneId.id
+            });
+        }
+        let feedback = null;
+        if (loading) {
+            feedback = <div><h3>Loading...</h3></div>
+        } else if (error && error.message) {
+            feedback = <div className="alert alert-danger">Error: {error && error.message}</div>
+        }
 
         const columns = [{
             Header: 'Name',
@@ -62,7 +82,9 @@ class ScenesPage extends Component{
         },{
             Header: 'Delete?',
             Cell: row => (
-                <button onClick={() => {this.props.handleDelete(row.original)}}>Delete</button>
+                <button onClick={() => {
+                    this.props.handleDelete(row.original)
+                }}>Delete</button>
             )
         }];
 
@@ -82,6 +104,8 @@ class ScenesPage extends Component{
                                    eventHandlers={eventHandlers}
                                    djsConfig={djsConfig} />
                 <div>
+                    <button onClick={this.props.handleDelete.bind(this, {bar: 3})}>Test</button>
+                    {feedback}
                     <Tabs activeLinkStyle={styles.activeLinkStyle} visibleTabStyle={styles.visibleTabStyle} style={styles.tabs}>
                         <div style={styles.links}>
                             <TabLink to="tab1" default style={styles.tabLink} className="col-md-4 text-center">My Scenes</TabLink>
@@ -93,7 +117,7 @@ class ScenesPage extends Component{
                             <TabContent for="tab1" className="col-md-12">
                                 <hr />
                                 <ReactTable
-                                    data={data}
+                                    data={scenes}
                                     columns={columns}
                                     defaultPageSize={12}
                                 />
@@ -101,7 +125,7 @@ class ScenesPage extends Component{
                             <TabContent for="tab2" className="col-md-12">
                                 <hr />
                                 <ReactTable
-                                    data={data}
+                                    data={scenes}
                                     columns={columns}
                                     defaultPageSize={8}
                                 />
@@ -109,7 +133,7 @@ class ScenesPage extends Component{
                             <TabContent for="tab3" className="col-md-12">
                                 <hr />
                                 <ReactTable
-                                    data={data}
+                                    data={scenes}
                                     columns={columns}
                                     defaultPageSize={5}
                                 />
@@ -122,16 +146,23 @@ class ScenesPage extends Component{
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
-    scenes: state.scenes
+    scenesList: state.scenes.scenesList,
+    deleteSceneId: state.deleteSceneId
   };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleDelete: (scene) => {dispatch(deleteSceneActionCreator(scene))},
+        retrieveScenes: () => {
+            dispatch(fetchScenes()).then((response) => {
+                !response.error ? dispatch(fetchScenesSuccess(response.payload.data)) : dispatch(fetchScenesFailure(response.payload.data));
+            });
+        }
+    };
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        handleDelete: deleteSceneActionCreator
-    }, dispatch);
-}
 
 export default connect (mapStateToProps, mapDispatchToProps)(ScenesPage);

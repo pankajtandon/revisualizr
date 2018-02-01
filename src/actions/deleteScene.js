@@ -1,8 +1,8 @@
-export const deleteSceneActionCreator = (state, scene) => {
-    console.log('Scene', scene);
-    console.log('State', state);
+export const DELETE_SCENE = 'DELETE_SCENE';
+
+export const deleteSceneActionCreator = (scene) => {
     return {
-        type: "DELETE_SCENE",
-        payload: scene
+        type: DELETE_SCENE,
+        payload: scene.id
     }
 };

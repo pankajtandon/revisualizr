@@ -4,7 +4,7 @@ import DeleteSceneReducer from './reducer-delete-scene';
 
 const appReducers = combineReducers({
     scenes: ScenesReducer,
-    deleteScene: DeleteSceneReducer
+    deleteSceneId: DeleteSceneReducer
 });
 
 export default appReducers;
