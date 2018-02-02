@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Tabs, TabLink, TabContent } from 'react-tabs-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import { Link } from 'react-router';
 import DropzoneComponent from 'react-dropzone-component';
 import 'react-dropzone-component/styles/filepicker.css'
 import {bindActionCreators} from 'redux';
@@ -67,7 +68,12 @@ class ScenesPage extends Component{
 
         const columns = [{
             Header: 'Name',
-            accessor: 'name' // String-based value accessors!
+            accessor: 'name',
+            Cell: row => (
+                  <Link style={{color:'blue'}} to={"scenes/" + row.original.id}>
+                    <h4 className="list-group-item-heading">{row.original.name}</h4>
+                  </Link>
+            )
         }, {
             Header: props => <span>Description of Scene</span>, // Custom header components!
             accessor: 'description'

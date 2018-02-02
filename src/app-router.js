@@ -7,6 +7,7 @@ import AboutPage from './components/about/AboutPage';
 import ContactPage from './components/contact/ContactPage';
 import ScenesPage from "./components/scenes/ScenesPage";
 import LoginPage from './components/auth/LoginPage';
+import SceneDetailPage from './components/scenes/SceneDetailPage';
 
 export default class AppRouter extends Component{
     render(){
@@ -18,6 +19,7 @@ export default class AppRouter extends Component{
                     <Route path="/contact" component={ContactPage}/>
                     <Route path="/login" component={LoginPage}/>
                     <Route path="/scenes" component={ScenesPage}/>
+                    <Route path="/scenes/:id" component={SceneDetailPage}/>
                 </Route>
             </Router>
         );
