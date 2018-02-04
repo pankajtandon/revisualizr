@@ -42,3 +42,68 @@ export function fetchScenesFailure(error) {
         payload: error
     };
 }
+
+export function validateSceneFields(props) {
+
+    const request = axios.post(`${ROOT_URL}/scenes/validate/fields`, props);
+
+    return {
+        type: VALIDATE_SCENE_FIELDS,
+        payload: request
+    };
+}
+
+export function validateSceneFieldsSuccess() {
+    return {
+        type: VALIDATE_SCENE_FIELDS_SUCCESS
+    };
+}
+
+export function validateSceneFieldsFailure(error) {
+    return {
+        type: VALIDATE_SCENE_FIELDS_FAILURE,
+        payload: error
+    };
+}
+
+export function resetSceneFields() {
+    return {
+        type: RESET_SCENE_FIELDS
+    }
+}
+
+export function createScene(props, tokenFromStorage) {
+    const request = axios({
+        method: 'post',
+        data: props,
+        url: `${ROOT_URL}/scene`,
+        headers: {
+            'Authorization': `Bearer ${tokenFromStorage}`
+        }
+    });
+
+    return {
+        type: CREATE_SCENE,
+        payload: request
+    };
+}
+
+export function createSceneSuccess(newScene) {
+    return {
+        type: CREATE_SCENE_SUCCESS,
+        payload: newScene
+    };
+}
+
+export function createSceneFailure(error) {
+    return {
+        type: CREATE_SCENE_FAILURE,
+        payload: error
+    };
+}
+
+export function resetNewScene() {
+    return {
+        type: RESET_NEW_SCENE
+    }
+}
